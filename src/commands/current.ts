@@ -19,6 +19,7 @@ const current = () => async (ctx: Context) => {
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
+    timeZone: "CET",
   };
   const carrera = new Date(gp.carrera);
   const libres1 = new Date(gp.libres1);
