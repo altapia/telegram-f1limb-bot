@@ -10,7 +10,9 @@ const apuestas = () => async (ctx: Context) => {
   const apuestas = JSON.parse(body);
 
   if (!Array.isArray(apuestas)) {
-    await ctx.replyWithMarkdownV2(apuestas.message, { parse_mode: 'Markdown' });
+    await ctx.replyWithMarkdownV2('⚠️' + apuestas.message, {
+      parse_mode: 'Markdown',
+    });
     return;
   }
 
@@ -22,11 +24,12 @@ const apuestas = () => async (ctx: Context) => {
   const icoFallo = '❌';
   const icoPendiente = '➖';
   const icoDinero = '💸';
+  const icoUsuario = '🥸';
 
-  let message = `*Apuestas del GP de: ${gp.nombre}*\n\n`;
+  let message = `*Apuestas del GP de ${gp.nombre}*\n\n`;
   apuestas.map((a: any) => {
     if (a.apuestas.length > 0) {
-      message += `\n${a.nombre}:\n`;
+      message += `\n${icoUsuario}${a.nombre}:\n`;
 
       a.apuestas.map((ap: any) => {
         switch (ap.estado) {
