@@ -8,7 +8,11 @@ const apuestas = () => async (ctx: Context) => {
   const response = await fetch(URL_API + 'apuestas');
   const body = await response.text();
   const apuestas = JSON.parse(body);
-  console.log(apuestas);
+
+  if (!Array.isArray(apuestas)) {
+    await ctx.replyWithMarkdownV2(apuestas.message, { parse_mode: 'Markdown' });
+    return;
+  }
 
   const responseGP = await fetch(URL_API + 'gp/current');
   const bodyGP = await responseGP.text();
