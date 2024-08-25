@@ -1,16 +1,13 @@
 import { Context } from 'telegraf';
 import createDebug from 'debug';
 
-import { author, name, version } from '../../package.json';
-
 const debug = createDebug('bot:next_command');
+const URL_API = process.env.URL_API || '';
 
 const next = () => async (ctx: Context) => {
-  debug(`Antes de fetch`);
-  const response = await fetch('https://f1limb.vercel.app/api/gp/next');
+  const response = await fetch(URL_API + 'gp/next');
   const body = await response.text();
   const gp = JSON.parse(body);
-  console.log(gp);
 
   const options: Intl.DateTimeFormatOptions = {
     weekday: 'short',
@@ -19,7 +16,7 @@ const next = () => async (ctx: Context) => {
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
-    timeZone: "CET",
+    timeZone: 'CET',
   };
   const carrera = new Date(gp.carrera);
   const libres1 = new Date(gp.libres1);

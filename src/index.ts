@@ -1,6 +1,6 @@
 import { Telegraf } from 'telegraf';
 
-import { about, current, next } from './commands';
+import { about, current, next, apuestas } from './commands';
 import { greeting } from './text';
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import { development, production } from './core';
@@ -13,6 +13,7 @@ const bot = new Telegraf(BOT_TOKEN);
 // bot.command('about', about());
 bot.command('gp', current());
 bot.command('gp_next', next());
+bot.command('apuestas', apuestas());
 // bot.on('message', greeting());
 
 //prod mode (Vercel)
