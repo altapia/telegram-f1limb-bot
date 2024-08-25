@@ -14,7 +14,7 @@ const bot = new Telegraf(BOT_TOKEN);
 bot.command('gp', current());
 bot.command('gp_next', next());
 bot.command('apuestas', apuestas());
-bot.command('clasificacionGP', clasificacionGP());
+bot.command('clasificacion_gp', clasificacionGP());
 
 // bot.on('message', greeting());
 
