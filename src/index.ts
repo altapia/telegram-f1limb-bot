@@ -38,10 +38,10 @@ bot.command('euros_gp', eurosGP());
 bot.command('web', web());
 bot.command('apostadya', apostadya());
 bot.command('misapuestas', misApuestas());
-bot.command('apostar', apostar());
-bot.command('cancel', cancel());
+// bot.command('apostar', apostar());
+// bot.command('cancel', cancel());
 
-bot.on('message', apostarSteps());
+// bot.on('message', apostarSteps());
 
 //prod mode (Vercel)
 export const startVercel = async (req: VercelRequest, res: VercelResponse) => {
