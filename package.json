@@ -6,6 +6,7 @@
   "author": "Mark Pavlov (https://github.com/sollidy)",
   "homepage": "https://github.com/sollidy/telegram-bot-vercel-boilerplate",
   "dependencies": {
+    "@telegraf/entity": "^0.5.0",
     "@vercel/node": "^3.2.7",
     "dotenv-cli": "^7.4.2",
     "telegraf": "^4.16.3"

@@ -9,6 +9,7 @@ const apuestas = () => async (ctx: Context) => {
   const body = await response.text();
   const apuestas = JSON.parse(body);
 
+  // Si no se pueden ver
   if (!Array.isArray(apuestas)) {
     await ctx.replyWithMarkdownV2('⚠️' + apuestas.message, {
       parse_mode: 'Markdown',

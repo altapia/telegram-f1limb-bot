@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@telegraf/entity':
+    specifier: ^0.5.0
+    version: 0.5.0
   '@vercel/node':
     specifier: ^3.2.7
     version: 3.2.9
@@ -139,6 +142,12 @@ packages:
     dependencies:
       estree-walker: 2.0.2
       picomatch: 2.3.1
+    dev: false
+
+  /@telegraf/entity@0.5.0:
+    resolution: {integrity: sha512-4oHOoXcrNaK44zPq4GuTgMmUvCSQxJRVAuPFzVtSeiKzCBJnLeYblsMqWotokhrZSDnNpunC1sxhqI3iVYa/sg==}
+    dependencies:
+      '@telegraf/types': 7.1.0
     dev: false
 
   /@telegraf/types@7.1.0:

@@ -1,5 +1,4 @@
-import { Telegraf } from 'telegraf';
-
+import { session, Telegraf } from 'telegraf';
 import {
   current,
   next,
@@ -12,16 +11,20 @@ import {
   eurosGP,
   web,
   apostadya,
+  misApuestas,
+  apostar,
+  apostarSteps,
+  cancel,
 } from './commands';
-// import { about } from './commands';
-// import { greeting } from './text';
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import { development, production } from './core';
+import { ApostarContext } from './core/apostarContext';
 
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
 const ENVIRONMENT = process.env.NODE_ENV || '';
 
-const bot = new Telegraf(BOT_TOKEN);
+const bot = new Telegraf<ApostarContext>(BOT_TOKEN);
+bot.use(session());
 
 bot.command('gp', current());
 bot.command('gp_next', next());
@@ -34,9 +37,11 @@ bot.command('euros', euros());
 bot.command('euros_gp', eurosGP());
 bot.command('web', web());
 bot.command('apostadya', apostadya());
+bot.command('misapuestas', misApuestas());
+bot.command('apostar', apostar());
+bot.command('cancel', cancel());
 
-// bot.command('about', about());
-// bot.on('message', greeting());
+bot.on('message', apostarSteps());
 
 //prod mode (Vercel)
 export const startVercel = async (req: VercelRequest, res: VercelResponse) => {

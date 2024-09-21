@@ -1,4 +1,3 @@
-export * from './about';
 export * from './current';
 export * from './next';
 export * from './apuestas';
@@ -10,3 +9,5 @@ export * from './euros';
 export * from './eurosGP';
 export * from './web';
 export * from './apostadya';
+export * from './misApuestas';
+export * from './apostar';
