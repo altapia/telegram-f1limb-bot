@@ -1,5 +1,6 @@
 import createDebug from 'debug';
-import { escapers } from '@telegraf/entity';
+var escape = require('escape-html');
+import { ApostarContext } from '../core/apostarContext';
 
 const debug = createDebug('bot:next_command');
 const URL_API = process.env.URL_API || '';
@@ -10,7 +11,7 @@ const API_TOKEN = process.env.API_TOKEN || '';
  * Reincia la sesión
  * @returns
  */
-const cancel = () => async (ctx: any) => {
+const cancel = () => async (ctx: ApostarContext) => {
   ctx.session = { iniciado: false, descripcion: null, importeDisponible: 0 };
   await ctx.reply('Comando cancelado');
 };
@@ -19,7 +20,7 @@ const cancel = () => async (ctx: any) => {
  * Inicia los pasos del comando apostar si se ejecuta en privado y hay importe disponible
  * @returns
  */
-const apostar = () => async (ctx: any) => {
+const apostar = () => async (ctx: ApostarContext) => {
   ctx.session = { iniciado: true, descripcion: null, importeDisponible: 0 };
 
   const chatType = (await ctx.getChat()).type;
@@ -63,7 +64,7 @@ const apostar = () => async (ctx: any) => {
  * Según el estado en el que se encuentra la sesión, pide el importe o ejecuta la apuesta
  * @returns
  */
-const apostarSteps = () => async (ctx: any) => {
+const apostarSteps = () => async (ctx: ApostarContext) => {
   if (ctx.session?.iniciado === true) {
     let contenido = ctx.text as string;
     if (
@@ -75,13 +76,13 @@ const apostarSteps = () => async (ctx: any) => {
       if (isNaN(importe)) {
         let message = '⚠️El importe debe ser númerico';
         message += '\n\nVuelve a indicarme el importe o cancela con /cancel';
-        await ctx.replyWithMarkdownV2(message);
+        await ctx.reply(message);
         return;
       }
       if (ctx.session.importeDisponible < importe) {
-        let message = `⚠️El importe indicado supera el máximo disponible: ${escapers.MarkdownV2(ctx.session.importeDisponible.toString())}€`;
+        let message = `⚠️El importe indicado supera el máximo disponible: ${ctx.session.importeDisponible.toString()}€`;
         message += '\n\nVuelve a indicarme el importe o cancela con /cancel';
-        await ctx.replyWithMarkdownV2(message);
+        await ctx.replyWithHTML(message);
         return;
       }
 
@@ -98,13 +99,13 @@ const apostarSteps = () => async (ctx: any) => {
         const error = await resp.json();
         let message = `⚠️ ${error.message}\n\n`;
         message += 'Para cancelar: /cancel';
-        await ctx.replyWithMarkdownV2(escapers.MarkdownV2(message));
+        await ctx.replyWithHTML(message);
         return;
       }
 
-      let message = `*Descripción:*\n_${escapers.MarkdownV2(ctx.session.descripcion)}_\n`;
-      message += `*Importe:* _${escapers.MarkdownV2(importe.toString())}€_\n\n`;
-      message += 'Ok, apuesta insertada\n';
+      let message = `<b>Descripción:</b>\n<i>${ctx.session.descripcion}</i>\n\n`;
+      message += `<b>Importe:</b> <i>${importe.toString()}€</i>\n\n`;
+      message += 'Ok, apuesta insertada\n\n';
       message += 'Usa /misapuestas para ver a que has apostado';
 
       ctx.session = {
@@ -112,19 +113,18 @@ const apostarSteps = () => async (ctx: any) => {
         descripcion: null,
         importeDisponible: 0,
       };
-      await ctx.replyWithMarkdownV2(message);
+      await ctx.replyWithHTML(message);
     } else {
       if (contenido.trim() !== '') {
-        ctx.session.descripcion = ctx.text ?? '';
-        let message = `Descripción:\n_${escapers.MarkdownV2(ctx.session.descripcion)}_\n\n`;
-        message += 'Dime el importe \\(solo la cifra\\):\n\n';
+        ctx.session.descripcion = escape(ctx.text) ?? '';
+        let message = `Descripción:\n<i>${ctx.session.descripcion}</i>\n\n`;
+        message += 'Dime el importe (solo la cifra):\n\n';
         message += 'Para cancelar: /cancel';
-        await ctx.replyWithMarkdownV2(message);
+        await ctx.replyWithHTML(message);
         return;
       }
       // este caso no debería darse, telegram no deja enviarlo
-      const message = 'La descripción no puede estar vacía';
-      await ctx.replyWithMarkdownV2(message);
+      await ctx.reply('⚠️ La descripción no puede estar vacía');
     }
   }
 };
