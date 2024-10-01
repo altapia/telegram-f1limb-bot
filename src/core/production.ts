@@ -8,7 +8,9 @@ const debug = createDebug('bot:dev');
 
 const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || '';
 const PORT = (process.env.PORT && parseInt(process.env.PORT, 10)) || 3000;
-const VERCEL_URL = `${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+const VERCEL_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+const VERCEL_REGION = process.env.VERCEL_REGION || '';
+const VERCEL_GIT_COMMIT_MESSAGE = process.env.VERCEL_GIT_COMMIT_MESSAGE || '';
 
 const production = async (
   req: VercelRequest,
@@ -38,7 +40,8 @@ const production = async (
   debug(`starting webhook on port: ${PORT}`);
   await bot.telegram.sendMessage(
     ADMIN_CHAT_ID,
-    `${icoSunrise} ¡F1LimbBot iniciado correctamente. webhook: ${VERCEL_URL}/api`,
+    `${icoSunrise} *¡F1LimbBot iniciado correctamente!*\n\n*Webhook:* ${VERCEL_URL}/api\n*Region:* ${VERCEL_REGION}\n*Commit:* ${VERCEL_GIT_COMMIT_MESSAGE}`,
+    { parse_mode: 'MarkdownV2' },
   );
 };
 export { production };
