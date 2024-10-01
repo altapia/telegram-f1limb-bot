@@ -1,5 +1,14 @@
 import { Context } from 'telegraf';
 import createDebug from 'debug';
+import {
+  icoAcierto,
+  icoFallo,
+  icoPendiente,
+  icoDinero,
+  icoUsuario,
+  icoClock,
+  icoInfo,
+} from '../constants/icons';
 
 const debug = createDebug('bot:next_command');
 const URL_API = process.env.URL_API || '';
@@ -26,13 +35,6 @@ const misApuestas = () => async (ctx: Context) => {
   const bodyGP = await responseGP.text();
   const gp = JSON.parse(bodyGP);
 
-  const icoAcierto = '✅';
-  const icoFallo = '❌';
-  const icoPendiente = '➖';
-  const icoDinero = '💸';
-  const icoUsuario = '🥸';
-  const icoClock = '⌛️';
-
   let message: string;
   if (apuestas.length > 0) {
     message = `*Tus apuestas del GP de ${gp.nombre}*\n\n`;
@@ -55,7 +57,7 @@ const misApuestas = () => async (ctx: Context) => {
       message += ` ${ap.descripcion}: ${ap.importe}€${cuota} ${ap.ganancia ? icoDinero + ap.ganancia + '€' : ''}\n`;
     });
   } else {
-    message = `*GP de ${gp.nombre}*\nℹ️ No tienes ninguna apuesta`;
+    message = `*GP de ${gp.nombre}*\n${icoInfo} No tienes ninguna apuesta`;
   }
 
   debug(`Triggered "next" command with message \n${message}`);

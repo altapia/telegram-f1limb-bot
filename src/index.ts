@@ -19,6 +19,7 @@ import {
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import { development, production } from './core';
 import { ApostarContext } from './core/apostarContext';
+import { privado } from './middleware/privado';
 
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
 const ENVIRONMENT = process.env.NODE_ENV || '';
@@ -37,15 +38,16 @@ bot.command('euros', euros());
 bot.command('euros_gp', eurosGP());
 bot.command('web', web());
 bot.command('apostadya', apostadya());
-bot.command('misapuestas', misApuestas());
-bot.command('apostar', apostar());
-bot.command('cancel', cancel());
 
-bot.on('message', apostarSteps());
+// comandos privados
+bot.command('misapuestas', privado, misApuestas());
+bot.command('apostar', privado, apostar());
+bot.command('cancel', privado, cancel());
+bot.on('message', privado, apostarSteps());
 
 //prod mode (Vercel)
 export const startVercel = async (req: VercelRequest, res: VercelResponse) => {
   await production(req, res, bot);
 };
-//dev mode
+//dev amode
 ENVIRONMENT !== 'production' && development(bot);

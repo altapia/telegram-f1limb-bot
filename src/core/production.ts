@@ -2,9 +2,11 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 import createDebug from 'debug';
 import { Context, Telegraf } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
+import { icoSunrise } from '../constants/icons';
 
 const debug = createDebug('bot:dev');
 
+const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || '';
 const PORT = (process.env.PORT && parseInt(process.env.PORT, 10)) || 3000;
 const VERCEL_URL = `${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
 
@@ -26,6 +28,10 @@ const production = async (
     await bot.telegram.deleteWebhook();
     debug(`setting webhook: ${VERCEL_URL}/api`);
     await bot.telegram.setWebhook(`${VERCEL_URL}/api`);
+    await bot.telegram.sendMessage(
+      ADMIN_CHAT_ID,
+      `${icoSunrise} ¡F1LimbBot iniciado correctamente. webhook: ${VERCEL_URL}/api`,
+    );
   }
 
   if (req.method === 'POST') {

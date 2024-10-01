@@ -1,6 +1,7 @@
 import createDebug from 'debug';
 var escape = require('escape-html');
 import { ApostarContext } from '../core/apostarContext';
+import { icoDinero, icoWarning } from '../constants/icons';
 
 const debug = createDebug('bot:next_command');
 const URL_API = process.env.URL_API || '';
@@ -23,15 +24,6 @@ const cancel = () => async (ctx: ApostarContext) => {
 const apostar = () => async (ctx: ApostarContext) => {
   ctx.session = { iniciado: true, descripcion: null, importeDisponible: 0 };
 
-  const chatType = (await ctx.getChat()).type;
-
-  if (chatType !== 'private') {
-    let message = '⚠️Este comando solo en privado, crack!';
-    debug(`Triggered "next" command with message \n${message}`);
-    await ctx.replyWithMarkdownV2(message, { parse_mode: 'Markdown' });
-    return;
-  }
-
   const idUser = (await ctx.getChat()).id;
   // Obtener importe disponible
 
@@ -44,7 +36,7 @@ const apostar = () => async (ctx: ApostarContext) => {
   const { gp, importeDisponible } = await response.json();
 
   if (parseFloat(importeDisponible) === 0) {
-    let message = `*GP de ${gp.nombre}*\n⚠️Ya has agotado el importe disponible para apostar\n Usa /misapuestas para ver a que has apostado.`;
+    let message = `*GP de ${gp.nombre}*\n${icoWarning} Ya has agotado el importe disponible para apostar\n Usa /misapuestas para ver a que has apostado.`;
     debug(`Triggered "next" command with message \n${message}`);
     await ctx.replyWithMarkdownV2(message, { parse_mode: 'Markdown' });
     return;
@@ -56,7 +48,7 @@ const apostar = () => async (ctx: ApostarContext) => {
     ctx.session.importeDisponible = importeDisponible;
   }
 
-  let message = `*GP de ${gp.nombre}*\n💰Importe disponible: ${importeDisponible}€\n\nDime la descripción de tu apuesta:`;
+  let message = `*GP de ${gp.nombre}*\n${icoDinero}Importe disponible: ${importeDisponible}€\n\nDime la descripción de tu apuesta:`;
   await ctx.replyWithMarkdownV2(message, { parse_mode: 'Markdown' });
 };
 
@@ -74,13 +66,13 @@ const apostarSteps = () => async (ctx: ApostarContext) => {
       let importe = 0;
       importe = parseFloat(contenido.replaceAll(',', '.'));
       if (isNaN(importe)) {
-        let message = '⚠️El importe debe ser númerico';
+        let message = `${icoWarning} El importe debe ser númerico`;
         message += '\n\nVuelve a indicarme el importe o cancela con /cancel';
         await ctx.reply(message);
         return;
       }
       if (ctx.session.importeDisponible < importe) {
-        let message = `⚠️El importe indicado supera el máximo disponible: ${ctx.session.importeDisponible.toString()}€`;
+        let message = `${icoWarning} El importe indicado supera el máximo disponible: ${ctx.session.importeDisponible.toString()}€`;
         message += '\n\nVuelve a indicarme el importe o cancela con /cancel';
         await ctx.replyWithHTML(message);
         return;
@@ -97,7 +89,7 @@ const apostarSteps = () => async (ctx: ApostarContext) => {
       });
       if (resp.status !== 200) {
         const error = await resp.json();
-        let message = `⚠️ ${error.message}\n\n`;
+        let message = `${icoWarning} ${error.message}\n\n`;
         message += 'Para cancelar: /cancel';
         await ctx.replyWithHTML(message);
         return;
@@ -124,7 +116,7 @@ const apostarSteps = () => async (ctx: ApostarContext) => {
         return;
       }
       // este caso no debería darse, telegram no deja enviarlo
-      await ctx.reply('⚠️ La descripción no puede estar vacía');
+      await ctx.reply(`${icoWarning} La descripción no puede estar vacía`);
     }
   }
 };
