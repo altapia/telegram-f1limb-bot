@@ -71,6 +71,12 @@ const apostarSteps = () => async (ctx: ApostarContext) => {
         await ctx.reply(message);
         return;
       }
+      if (importe <= 0) {
+        let message = `${icoWarning} El importe debe ser mayor que 0`;
+        message += '\n\nVuelve a indicarme el importe o cancela con /cancel';
+        await ctx.reply(message);
+        return;
+      }
       if (ctx.session.importeDisponible < importe) {
         let message = `${icoWarning} El importe indicado supera el máximo disponible: ${ctx.session.importeDisponible.toString()}€`;
         message += '\n\nVuelve a indicarme el importe o cancela con /cancel';

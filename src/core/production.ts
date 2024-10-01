@@ -2,15 +2,11 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 import createDebug from 'debug';
 import { Context, Telegraf } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
-import { icoSunrise } from '../constants/icons';
 
 const debug = createDebug('bot:dev');
 
-const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || '';
 const PORT = (process.env.PORT && parseInt(process.env.PORT, 10)) || 3000;
 const VERCEL_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL;
-const VERCEL_REGION = process.env.VERCEL_REGION || '';
-const VERCEL_GIT_COMMIT_MESSAGE = process.env.VERCEL_GIT_COMMIT_MESSAGE || '';
 
 const production = async (
   req: VercelRequest,
@@ -38,9 +34,5 @@ const production = async (
     res.status(200).json('Listening to bot events...');
   }
   debug(`starting webhook on port: ${PORT}`);
-  await bot.telegram.sendMessage(
-    ADMIN_CHAT_ID,
-    `${icoSunrise} ¡F1LimbBot iniciado correctamente!\n\nWebhook: ${VERCEL_URL}/api\nRegion: ${VERCEL_REGION}\nCommit: ${VERCEL_GIT_COMMIT_MESSAGE}`,
-  );
 };
 export { production };
