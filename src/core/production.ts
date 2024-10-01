@@ -28,10 +28,6 @@ const production = async (
     await bot.telegram.deleteWebhook();
     debug(`setting webhook: ${VERCEL_URL}/api`);
     await bot.telegram.setWebhook(`${VERCEL_URL}/api`);
-    await bot.telegram.sendMessage(
-      ADMIN_CHAT_ID,
-      `${icoSunrise} ¡F1LimbBot iniciado correctamente. webhook: ${VERCEL_URL}/api`,
-    );
   }
 
   if (req.method === 'POST') {
@@ -40,5 +36,9 @@ const production = async (
     res.status(200).json('Listening to bot events...');
   }
   debug(`starting webhook on port: ${PORT}`);
+  await bot.telegram.sendMessage(
+    ADMIN_CHAT_ID,
+    `${icoSunrise} ¡F1LimbBot iniciado correctamente. webhook: ${VERCEL_URL}/api`,
+  );
 };
 export { production };
