@@ -40,8 +40,7 @@ const production = async (
   debug(`starting webhook on port: ${PORT}`);
   await bot.telegram.sendMessage(
     ADMIN_CHAT_ID,
-    `${icoSunrise} *¡F1LimbBot iniciado correctamente!*\n\n*Webhook:* ${VERCEL_URL}/api\n*Region:* ${VERCEL_REGION}\n*Commit:* ${VERCEL_GIT_COMMIT_MESSAGE}`,
-    { parse_mode: 'MarkdownV2' },
+    `${icoSunrise} ¡F1LimbBot iniciado correctamente!\n\nWebhook: ${VERCEL_URL}/api\nRegion: ${VERCEL_REGION}\nCommit: ${VERCEL_GIT_COMMIT_MESSAGE}`,
   );
 };
 export { production };
