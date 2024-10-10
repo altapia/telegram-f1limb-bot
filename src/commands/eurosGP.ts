@@ -1,5 +1,6 @@
 import { Context } from 'telegraf';
 import createDebug from 'debug';
+import { icoDinero } from '../constants/icons';
 
 const debug = createDebug('bot:next_command');
 const URL_API = process.env.URL_API || '';
@@ -12,8 +13,6 @@ const eurosGP = () => async (ctx: Context) => {
   const responseGP = await fetch(URL_API + 'gp/current');
   const bodyGP = await responseGP.text();
   const gp = JSON.parse(bodyGP);
-
-  const icoDinero = '💰';
 
   let message = `*${icoDinero}Euros del GP de ${gp.nombre}*\n`;
   message += `*Ganancias: * ${euros.ganancias}€\n`;

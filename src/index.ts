@@ -1,4 +1,4 @@
-import { session, Telegraf } from 'telegraf';
+import { Composer, Scenes, session, Telegraf } from 'telegraf';
 import {
   current,
   next,
@@ -13,8 +13,8 @@ import {
   apostadya,
   misApuestas,
   apostar,
-  apostarSteps,
-  cancel,
+  apostarStep2,
+  apostarStep3,
 } from './commands';
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import { development, production } from './core';
@@ -30,7 +30,6 @@ const VERCEL_GIT_COMMIT_MESSAGE = process.env.VERCEL_GIT_COMMIT_MESSAGE || '';
 const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || '';
 
 const bot = new Telegraf<ApostarContext>(BOT_TOKEN);
-bot.use(session());
 
 bot.command('gp', current());
 bot.command('gp_next', next());
@@ -45,20 +44,38 @@ bot.command('web', web());
 bot.command('apostadya', apostadya());
 
 // comandos privados
-bot.command('misapuestas', privado, misApuestas());
-bot.command('apostar', privado, apostar());
-bot.command('cancel', privado, cancel());
-bot.on('message', privado, apostarSteps());
+const privateBot = new Composer<ApostarContext>();
+privateBot.command('misapuestas', privado, misApuestas());
+bot.use(privateBot);
+
+const scene = new Scenes.WizardScene<ApostarContext>(
+  'sceneApostar',
+  apostar(),
+  apostarStep2(),
+  apostarStep3(),
+);
+scene.command('cancel', async (ctx) => {
+  await ctx.reply('Cancelado');
+  ctx.scene.leave();
+});
+
+const stage = new Scenes.Stage<ApostarContext>([scene]);
+bot.use(session());
+bot.use(stage.middleware());
+bot.command('apostar', privado, (ctx) => ctx.scene.enter('sceneApostar'));
 
 //prod mode (Vercel)
 export const startVercel = async (req: VercelRequest, res: VercelResponse) => {
   await production(req, res, bot);
 };
 
-function sendStartMessage() {
-  bot.telegram.sendMessage(
+async function sendStartMessage() {
+  await bot.telegram.sendMessage(
     ADMIN_CHAT_ID,
-    `${icoSunrise} ¡F1LimbBot iniciado correctamente!\n\nWebhook: ${VERCEL_URL}/api\nRegion: ${VERCEL_REGION}\nCommit: ${VERCEL_GIT_COMMIT_MESSAGE}`,
+    `${icoSunrise} ¡F1LimbBot iniciado correctamente!\n\n
+      Webhook: ${VERCEL_URL}/api\n
+      Region: ${VERCEL_REGION}\n
+      Commit: ${VERCEL_GIT_COMMIT_MESSAGE}`,
   );
 }
 

@@ -1,4 +1,4 @@
-import { Context } from 'telegraf';
+import { Context, Scenes } from 'telegraf';
 
 interface SessionData {
   iniciado: boolean;
@@ -6,7 +6,12 @@ interface SessionData {
   importeDisponible: number;
 }
 
+interface MyWizardSession extends Scenes.WizardSessionData {
+  data: SessionData;
+}
+
 interface ApostarContext extends Context {
-  session?: SessionData;
+  scene: Scenes.SceneContextScene<ApostarContext, MyWizardSession>;
+  wizard: Scenes.WizardContextWizard<ApostarContext>;
 }
 export { ApostarContext };

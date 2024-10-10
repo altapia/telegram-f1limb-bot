@@ -1,5 +1,15 @@
 import { Context } from 'telegraf';
 import createDebug from 'debug';
+import {
+  icoAcierto,
+  icoBronce,
+  icoDinero,
+  icoExplosion,
+  icoMinus,
+  icoOro,
+  icoPlata,
+  icoWarning,
+} from '../constants/icons';
 
 const debug = createDebug('bot:next_command');
 const URL_API = process.env.URL_API || '';
@@ -10,7 +20,7 @@ const clasificacionGP = () => async (ctx: Context) => {
   const listClasificacion = JSON.parse(body);
 
   if (!Array.isArray(listClasificacion)) {
-    await ctx.replyWithMarkdownV2('⚠️' + listClasificacion.message, {
+    await ctx.replyWithMarkdownV2(icoWarning + listClasificacion.message, {
       parse_mode: 'Markdown',
     });
     return;
@@ -19,14 +29,6 @@ const clasificacionGP = () => async (ctx: Context) => {
   const responseGP = await fetch(URL_API + 'gp/current');
   const bodyGP = await responseGP.text();
   const gp = JSON.parse(bodyGP);
-
-  const icoOro = '🥇';
-  const icoPlata = '🥈';
-  const icoBronce = '🥉';
-  const icoAcierto = '❇️';
-  const icoExplosion = '💥';
-  const icoMinus = '♿️';
-  const icoDinero = '💰';
 
   let message = `*Clasificación del GP de ${gp.nombre}*\n`;
   listClasificacion.map((a, i) => {

@@ -1,5 +1,6 @@
 import { Context } from 'telegraf';
 import createDebug from 'debug';
+import { icoOk, icoDedo, icoEnfado } from '../constants/icons';
 
 const debug = createDebug('bot:next_command');
 const URL_API = process.env.URL_API || '';
@@ -15,11 +16,11 @@ const apostadya = () => async (ctx: Context) => {
 
   let message = `*GP ${gp.nombre}*`;
   if (listUsuarios.length === 0) {
-    message += '\nHan apostado todos 👍';
+    message += '\nHan apostado todos ' + icoOk;
   } else {
-    message += `\n\n😡 Faltan por apostar:\n`;
+    message += `\n\n${icoEnfado} Faltan por apostar:\n`;
     listUsuarios.map((u: any) => {
-      message += `👉${u.nombre}\n`;
+      message += `${icoDedo}${u.nombre}\n`;
     });
   }
 

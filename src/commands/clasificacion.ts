@@ -1,5 +1,6 @@
 import { Context } from 'telegraf';
 import createDebug from 'debug';
+import { icoDinero, icoExplosion, icoWarning } from '../constants/icons';
 
 const debug = createDebug('bot:next_command');
 const URL_API = process.env.URL_API || '';
@@ -10,14 +11,11 @@ const clasificacion = () => async (ctx: Context) => {
   const listClasificacion = JSON.parse(body);
 
   if (!Array.isArray(listClasificacion)) {
-    await ctx.replyWithMarkdownV2('⚠️' + listClasificacion.message, {
+    await ctx.replyWithMarkdownV2(icoWarning + listClasificacion.message, {
       parse_mode: 'Markdown',
     });
     return;
   }
-
-  const icoDinero = '💰';
-  const icoExplosion = '💥';
 
   let message = `*Clasificación Individual*\n`;
   listClasificacion.map((a, i) => {

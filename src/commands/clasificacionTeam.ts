@@ -1,5 +1,6 @@
 import { Context } from 'telegraf';
 import createDebug from 'debug';
+import { icoDinero, icoExplosion } from '../constants/icons';
 
 const debug = createDebug('bot:next_command');
 const URL_API = process.env.URL_API || '';
@@ -15,9 +16,6 @@ const clasificacionTeam = () => async (ctx: Context) => {
     });
     return;
   }
-
-  const icoDinero = '💰';
-  const icoExplosion = '💥';
 
   let message = `*Clasificación por Equipos *\n`;
   listClasificacion.map((a, i) => {

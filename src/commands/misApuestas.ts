@@ -8,6 +8,7 @@ import {
   icoUsuario,
   icoClock,
   icoInfo,
+  icoWarning,
 } from '../constants/icons';
 
 const debug = createDebug('bot:next_command');
@@ -19,7 +20,7 @@ const misApuestas = () => async (ctx: Context) => {
   const chatType = (await ctx.getChat()).type;
 
   if (chatType !== 'private') {
-    let message = '⚠️ Este comando solo en privado, crack!';
+    let message = icoWarning + ' Este comando solo en privado, crack!';
     debug(`Triggered "next" command with message \n${message}`);
     await ctx.replyWithMarkdownV2(message, { parse_mode: 'Markdown' });
     return;

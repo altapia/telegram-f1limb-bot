@@ -1,5 +1,13 @@
 import { Context } from 'telegraf';
 import createDebug from 'debug';
+import {
+  icoAcierto,
+  icoFallo,
+  icoPendiente,
+  icoDinero,
+  icoUsuario,
+  icoWarning,
+} from '../constants/icons';
 
 const debug = createDebug('bot:next_command');
 const URL_API = process.env.URL_API || '';
@@ -11,7 +19,7 @@ const apuestas = () => async (ctx: Context) => {
 
   // Si no se pueden ver
   if (!Array.isArray(apuestas)) {
-    await ctx.replyWithMarkdownV2('⚠️' + apuestas.message, {
+    await ctx.replyWithMarkdownV2(icoWarning + apuestas.message, {
       parse_mode: 'Markdown',
     });
     return;
@@ -20,12 +28,6 @@ const apuestas = () => async (ctx: Context) => {
   const responseGP = await fetch(URL_API + 'gp/current');
   const bodyGP = await responseGP.text();
   const gp = JSON.parse(bodyGP);
-
-  const icoAcierto = '✅';
-  const icoFallo = '❌';
-  const icoPendiente = '➖';
-  const icoDinero = '💸';
-  const icoUsuario = '🥸';
 
   let message = `*Apuestas del GP de ${gp.nombre}*\n\n`;
   apuestas.map((a: any) => {
