@@ -1,7 +1,6 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import createDebug from 'debug';
-import { Context, Telegraf } from 'telegraf';
-import { Update } from 'telegraf/typings/core/types/typegram';
+import { Telegraf } from 'telegraf';
 import { ApostarContext } from './apostarContext';
 
 const debug = createDebug('bot:dev');
@@ -30,7 +29,7 @@ const production = async (
   }
 
   if (req.method === 'POST') {
-    await bot.handleUpdate(req.body as unknown as Update, res);
+    await bot.handleUpdate(req.body as unknown as any, res);
   } else {
     res.status(200).json('Listening to bot events...');
   }

@@ -72,9 +72,9 @@ export const startVercel = async (req: VercelRequest, res: VercelResponse) => {
 async function sendStartMessage() {
   await bot.telegram.sendMessage(
     ADMIN_CHAT_ID,
-    `${icoSunrise} ¡F1LimbBot iniciado correctamente!\n\n
-      Webhook: ${VERCEL_URL}/api\n
-      Region: ${VERCEL_REGION}\n
+    `${icoSunrise} ¡F1LimbBot iniciado correctamente!\n
+      Webhook: ${VERCEL_URL}/api
+      Region: ${VERCEL_REGION}
       Commit: ${VERCEL_GIT_COMMIT_MESSAGE}`,
   );
 }
