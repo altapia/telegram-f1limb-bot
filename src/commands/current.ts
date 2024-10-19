@@ -22,12 +22,16 @@ const current = () => async (ctx: Context) => {
   const libres1 = new Date(gp.libres1);
   const libres2 = new Date(gp.libres2);
   const libres3 = new Date(gp.libres3);
+  const sprint = new Date(gp.sprint);
+  const clasificacionSprint = new Date(gp.clasificacionSprint);
   const clasificacion = new Date(gp.clasificacion);
 
   const message = `*GP ${gp.nombre}*\n
     Libres 1: ${libres1.toLocaleDateString('es-ES', options)}
     Libres 2: ${libres2.toLocaleDateString('es-ES', options)}
     Libres 3: ${libres3.toLocaleDateString('es-ES', options)}
+    Clasificación Sprint: ${clasificacionSprint.toLocaleDateString('es-ES', options)}
+    Sprint: ${sprint.toLocaleDateString('es-ES', options)}
     Clasificación: ${clasificacion.toLocaleDateString('es-ES', options)}
     Carrera: ${carrera.toLocaleDateString('es-ES', options)}
   `;
