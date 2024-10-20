@@ -6,42 +6,42 @@ settings:
 
 dependencies:
   '@vercel/node':
-    specifier: ^3.2.7
+    specifier: 3.2.15
     version: 3.2.15
   dotenv-cli:
-    specifier: ^7.4.2
+    specifier: 7.4.2
     version: 7.4.2
   escape-html:
-    specifier: ^1.0.3
+    specifier: 1.0.3
     version: 1.0.3
   telegraf:
-    specifier: ^4.16.3
+    specifier: 4.16.3
     version: 4.16.3
 
 devDependencies:
   '@types/debug':
-    specifier: ^4.1.12
+    specifier: 4.1.12
     version: 4.1.12
   '@types/node':
-    specifier: ^20.14.12
+    specifier: 20.16.5
     version: 20.16.5
   '@vercel/ncc':
-    specifier: ^0.38.1
+    specifier: 0.38.1
     version: 0.38.1
   debug:
-    specifier: ^4.3.6
+    specifier: 4.3.7
     version: 4.3.7(supports-color@5.5.0)
   nodemon:
-    specifier: ^3.1.4
+    specifier: 3.1.7
     version: 3.1.7
   prettier:
-    specifier: ^3.3.3
+    specifier: 3.3.3
     version: 3.3.3
   ts-node:
-    specifier: ^10.9.2
+    specifier: 10.9.2
     version: 10.9.2(@types/node@20.16.5)(typescript@5.6.2)
   typescript:
-    specifier: ^5.5.4
+    specifier: 5.6.2
     version: 5.6.2
 
 packages:
@@ -104,7 +104,7 @@ packages:
       detect-libc: 2.0.3
       https-proxy-agent: 5.0.1
       make-dir: 3.1.0
-      node-fetch: 2.6.9
+      node-fetch: 2.7.0
       nopt: 5.0.0
       npmlog: 5.0.1
       rimraf: 3.0.2

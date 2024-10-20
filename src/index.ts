@@ -17,8 +17,7 @@ import {
   apostarStep3,
 } from './commands';
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import { development, production } from './core';
-import { ApostarContext } from './core/apostarContext';
+import { development, production, ApostarContext } from './core';
 import { privado } from './middleware/privado';
 import { icoSunrise } from './constants/icons';
 
