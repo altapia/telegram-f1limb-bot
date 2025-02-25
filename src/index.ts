@@ -42,6 +42,23 @@ bot.command('euros_gp', eurosGP());
 bot.command('web', web());
 bot.command('apostadya', apostadya());
 
+bot.command('box', async (ctx) => {
+  await ctx.reply(`Comandos disponibles:
+  /gp - Info del GP actual
+  /gp_next - Info del próximo GP
+  /apuestas - Info de las apuestas
+  /clasificacion_gp - Clasif GP
+  /clasificacion_team_gp - Clasif equipos del GP
+  /clasificacion - Clasif general
+  /clasificacion_team - Clasif de equipos
+  /euros - Info de los euros
+  /euros_gp - Info de los euros por GP
+  /web - Enlace a la web
+  /apostadya - Apuesta ya!
+  /apostar - 🔐 Apostar
+  /misapuestas - 🔐 Mis apuestas`);
+});
+
 // comandos privados
 const privateBot = new Composer<ApostarContext>();
 privateBot.command('misapuestas', privado, misApuestas());
