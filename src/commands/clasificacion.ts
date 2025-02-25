@@ -19,7 +19,7 @@ const clasificacion = () => async (ctx: Context) => {
 
   let message = `*Clasificación Individual*\n`;
   listClasificacion.map((a, i) => {
-    message += `*${i + 1}. ${a.user?.nombre}* _(${a.team?.nombre})_ ${icoExplosion}${a.puntos} ${icoDinero}${a.ganancia ? Math.round(a.ganancia * 100) / 100 : ''}€\n`;
+    message += `*${i + 1}. ${a.participante?.user?.nombre}* _(${a.participante?.team?.nombre})_ ${icoExplosion}${a.puntos} ${icoDinero}${a.ganancia != null ? Math.round(a.ganancia * 100) / 100 : '-'}€\n`;
   });
 
   debug(`Triggered "next" command with message \n${message}`);

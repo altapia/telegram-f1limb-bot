@@ -78,6 +78,6 @@ async function sendStartMessage() {
   );
 }
 
-//dev amode
+//dev mode
 ENVIRONMENT !== 'production' && development(bot);
-ENVIRONMENT === 'production' && sendStartMessage();
+ENVIRONMENT === 'production';

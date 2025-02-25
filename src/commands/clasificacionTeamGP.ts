@@ -8,6 +8,11 @@ const URL_API = process.env.URL_API || '';
 const clasificacionTeamGP = () => async (ctx: Context) => {
   const response = await fetch(URL_API + 'clasificacion-team-gp');
   const body = await response.text();
+  if (response.status === 404) {
+    debug(`Error 404: ${response.statusText}`);
+    await ctx.reply(`📴${response.statusText}`);
+    return;
+  }
   const listClasificacion = JSON.parse(body);
 
   if (!Array.isArray(listClasificacion)) {
@@ -23,7 +28,7 @@ const clasificacionTeamGP = () => async (ctx: Context) => {
 
   let message = `*Clasificación del GP de ${gp.nombre}*\n`;
   listClasificacion.map((a, i) => {
-    message += `*${i + 1}. ${a.team?.nombre}*: ${icoExplosion}${a.puntos} ${icoDinero}${a.ganancia ? Math.round(a.ganancia * 100) / 100 : ''}€\n`;
+    message += `*${i + 1}. ${a.participante?.team?.nombre}*: ${icoExplosion}${a.puntos} ${icoDinero}${a.ganancia != null ? Math.round(a.ganancia * 100) / 100 : '-'}€\n`;
   });
 
   debug(`Triggered "next" command with message \n${message}`);

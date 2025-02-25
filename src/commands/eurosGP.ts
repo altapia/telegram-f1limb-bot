@@ -8,6 +8,13 @@ const URL_API = process.env.URL_API || '';
 const eurosGP = () => async (ctx: Context) => {
   const response = await fetch(URL_API + 'euros-gp');
   const body = await response.text();
+
+  if (response.status === 404) {
+    debug(`Error 404: ${response.statusText}`);
+    await ctx.reply(`📴${response.statusText}`);
+    return;
+  }
+
   const euros = JSON.parse(body);
 
   const responseGP = await fetch(URL_API + 'gp/current');

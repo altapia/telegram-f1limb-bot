@@ -30,6 +30,11 @@ const misApuestas = () => async (ctx: Context) => {
     headers: { Authorization: `${API_TOKEN}` },
   });
   const body = await response.text();
+  if (response.status === 404) {
+    debug(`Error 404: ${response.statusText}`);
+    await ctx.reply(`📴${response.statusText}`);
+    return;
+  }
   const apuestas = JSON.parse(body);
 
   const responseGP = await fetch(URL_API + 'gp/current');

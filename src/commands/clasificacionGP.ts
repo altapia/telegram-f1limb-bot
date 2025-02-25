@@ -17,6 +17,11 @@ const URL_API = process.env.URL_API || '';
 const clasificacionGP = () => async (ctx: Context) => {
   const response = await fetch(URL_API + 'clasificacion-gp');
   const body = await response.text();
+  if (response.status === 404) {
+    debug(`Error 404: ${response.statusText}`);
+    await ctx.reply(`📴${response.statusText}`);
+    return;
+  }
   const listClasificacion = JSON.parse(body);
 
   if (!Array.isArray(listClasificacion)) {
@@ -53,7 +58,7 @@ const clasificacionGP = () => async (ctx: Context) => {
         icono = icoAcierto;
         break;
     }
-    message += `*${icono}${pos} ${a.user?.nombre}* _(${a.team?.nombre})_ ${icoExplosion}${a.puntos} ${icoDinero}${a.ganancia ? Math.round(a.ganancia * 100) / 100 : ''}€\n`;
+    message += `*${icono}${pos} ${a.participante?.user?.nombre}* _(${a.participante?.team?.nombre})_ ${icoExplosion}${a.puntos} ${icoDinero}${a.ganancia != null ? Math.round(a.ganancia * 100) / 100 : '-'}€\n`;
   });
 
   debug(`Triggered "next" command with message \n${message}`);

@@ -27,6 +27,14 @@ const apostar = () => async (ctx: ApostarContext) => {
       headers: { Authorization: `${API_TOKEN}` },
     },
   );
+
+  if (response.status === 404) {
+    debug(`Error 404: ${response.statusText}`);
+    await ctx.reply(`📴${response.statusText}`);
+    return;
+  }
+
+  console.log(response);
   const { gp, importeDisponible } = await response.json();
 
   if (parseFloat(importeDisponible) === 0) {

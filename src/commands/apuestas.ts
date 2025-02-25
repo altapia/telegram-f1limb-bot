@@ -15,6 +15,11 @@ const URL_API = process.env.URL_API || '';
 const apuestas = () => async (ctx: Context) => {
   const response = await fetch(URL_API + 'apuestas');
   const body = await response.text();
+  if (response.status === 404) {
+    debug(`Error 404: ${response.statusText}`);
+    await ctx.reply(`📴${response.statusText}`);
+    return;
+  }
   const apuestas = JSON.parse(body);
 
   // Si no se pueden ver
@@ -32,7 +37,7 @@ const apuestas = () => async (ctx: Context) => {
   let message = `*Apuestas del GP de ${gp.nombre}*\n\n`;
   apuestas.map((a: any) => {
     if (a.apuestas.length > 0) {
-      message += `\n${icoUsuario}${a.nombre}:\n`;
+      message += `\n${icoUsuario}${a.user.nombre}:\n`;
 
       a.apuestas.map((ap: any) => {
         switch (ap.estado) {

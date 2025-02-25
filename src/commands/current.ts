@@ -8,6 +8,13 @@ const URL_API = process.env.URL_API || '';
 const current = () => async (ctx: Context) => {
   const response = await fetch(URL_API + 'gp/current');
   const body = await response.text();
+
+  if (response.status === 404) {
+    debug(`Error 404: ${response.statusText}`);
+    await ctx.reply(`📴${response.statusText}`);
+    return;
+  }
+
   const gp = JSON.parse(body);
   const message = createMessageGP(gp);
 
