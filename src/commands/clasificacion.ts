@@ -9,7 +9,6 @@ const clasificacion = () => async (ctx: Context) => {
   const response = await fetch(URL_API + 'clasificacion');
   const body = await response.text();
   const listClasificacion = JSON.parse(body);
-
   if (!Array.isArray(listClasificacion)) {
     await ctx.replyWithMarkdownV2(icoWarning + listClasificacion.message, {
       parse_mode: 'Markdown',
@@ -19,7 +18,8 @@ const clasificacion = () => async (ctx: Context) => {
 
   let message = `*Clasificación Individual*\n`;
   listClasificacion.map((a, i) => {
-    message += `*${i + 1}. ${a.participante?.user?.nombre}* _(${a.participante?.team?.nombre})_ ${icoExplosion}${a.puntos} ${icoDinero}${a.ganancia != null ? Math.round(a.ganancia * 100) / 100 : '-'}€\n`;
+    const sancion = a.sancion > 0 ? ` (-${a.sancion})` : '';
+    message += `*${i + 1}. ${a.participante?.user?.nombre}* _(${a.participante?.team?.nombre})_ ${icoExplosion}${a.puntos}${sancion} ${icoDinero}${a.ganancia != null ? Math.round(a.ganancia * 100) / 100 : '-'}€\n`;
   });
 
   debug(`Triggered "next" command with message \n${message}`);
