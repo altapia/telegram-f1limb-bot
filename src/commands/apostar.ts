@@ -112,22 +112,30 @@ const apostarStep3 = () => async (ctx: ApostarContext) => {
         await ctx.replyWithHTML(message);
         return;
       }
-
-      const idUser = (await ctx.getChat()).id;
-      const resp = await fetch(`${URL_API}apostar?idTelegram=${idUser}`, {
-        method: 'POST',
-        headers: { Authorization: `${API_TOKEN}` },
-        body: JSON.stringify({
-          descripcion: ctx.scene.session.data.descripcion,
-          importe: importe,
-        }),
-      });
-      if (resp.status !== 200) {
-        const error = await resp.json();
-        let message = `${icoWarning} ${error.message}\n\n`;
-        message += 'Para cancelar: /cancel';
-        await ctx.replyWithHTML(message);
-        return;
+      try{
+        console.log('--Se procede a insertar la apuesta llamando a ', URL_API);
+        
+        const idUser = (await ctx.getChat()).id;
+        const resp = await fetch(`${URL_API}apostar?idTelegram=${idUser}`, {
+          method: 'POST',
+          headers: { Authorization: `${API_TOKEN}` },
+          body: JSON.stringify({
+            descripcion: ctx.scene.session.data.descripcion,
+            importe: importe,
+          }),
+        });
+        
+        console.error('--respuesta',resp);
+        
+        if (resp.status !== 200) {
+          const error = await resp.json();
+          let message = `${icoWarning} ${error.message}\n\n`;
+          message += 'Para cancelar: /cancel';
+          await ctx.replyWithHTML(message);
+          return;
+        }
+      } catch (error) {
+        console.error('Error al procesar apuesta', error)
       }
 
       let message = `<b>Descripción:</b>\n<i>${ctx.scene.session.data.descripcion}</i>\n\n`;
