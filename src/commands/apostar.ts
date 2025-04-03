@@ -125,9 +125,11 @@ const apostarStep3 = () => async (ctx: ApostarContext) => {
           }),
         });
         
-        console.error('--respuesta',resp);
+        console.error('--respuesta',resp.status);
         
         if (resp.status !== 200) {
+          console.error('Error en respuesta: ', resp)
+          console.error('Error body: ', resp.body )          
           const error = await resp.json();
           let message = `${icoWarning} ${error.message}\n\n`;
           message += 'Para cancelar: /cancel';
