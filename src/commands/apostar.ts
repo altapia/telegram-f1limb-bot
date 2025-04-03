@@ -112,24 +112,22 @@ const apostarStep3 = () => async (ctx: ApostarContext) => {
         await ctx.replyWithHTML(message);
         return;
       }
-      try{
-        console.log('--Se procede a insertar la apuesta llamando a ', URL_API);
-        
+      try{        
         const idUser = (await ctx.getChat()).id;
         const resp = await fetch(`${URL_API}apostar?idTelegram=${idUser}`, {
           method: 'POST',
-          headers: { Authorization: `${API_TOKEN}` },
+          headers: { 
+            Authorization: `${API_TOKEN}`,
+            'Content-Type': 'application/json'            
+          },
           body: JSON.stringify({
             descripcion: ctx.scene.session.data.descripcion,
             importe: importe,
           }),
         });
-        
-        console.error('--respuesta',resp.status);
-        
+                
         if (resp.status !== 200) {
           console.error('Error en respuesta: ', resp)
-          console.error('Error body: ', resp.body )          
           const error = await resp.json();
           let message = `${icoWarning} ${error.message}\n\n`;
           message += 'Para cancelar: /cancel';
