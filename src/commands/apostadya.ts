@@ -1,6 +1,7 @@
 import { Context } from 'telegraf';
 import createDebug from 'debug';
 import { icoOk, icoDedo, icoEnfado } from '../constants/icons';
+import { msgLimiteApostar } from '../utils/util';
 
 const debug = createDebug('bot:next_command');
 const URL_API = process.env.URL_API || '';
@@ -29,6 +30,11 @@ const apostadya = () => async (ctx: Context) => {
     listUsuarios.map((u: any) => {
       message += `${icoDedo}${u.nombre}\n`;
     });
+
+    if (gp.limite_apostar !== undefined) {
+      message += `\n\n`;
+      message += msgLimiteApostar(gp.limite_apostar);
+    }
   }
 
   debug(`Triggered "next" command with message \n${message}`);
