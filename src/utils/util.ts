@@ -26,7 +26,7 @@ const createMessageGP = (gp: any) => {
 
   if (gp.clasificacionSprint !== undefined) {
     const clasificacionSprint = new Date(gp.clasificacionSprint);
-    message += `Clasificación Spring: ${clasificacionSprint.toLocaleDateString('es-ES', options)}\n`;
+    message += `Clasificación Sprint: ${clasificacionSprint.toLocaleDateString('es-ES', options)}\n`;
   }
 
   if (gp.sprint !== undefined) {
